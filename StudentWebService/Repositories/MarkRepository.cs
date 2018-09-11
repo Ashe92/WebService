@@ -1,7 +1,11 @@
-﻿namespace StudentWebService.Repositories
+﻿using StudentWebService.Models;
+
+namespace StudentWebService.Repositories
 {
-    public class MarkRepository
+    public class MarkRepository : BaseRepository<Mark>
     {
-        
+        public MarkRepository() : base("Mark")
+        {
+        }
     }
 }

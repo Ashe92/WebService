@@ -1,6 +1,8 @@
-﻿namespace StudentWebService.Controllers
+﻿using StudentWebService.Controllers.Interfaces;
+
+namespace StudentWebService.Controllers
 {
-    public class MakrController
+    public class MakrController : IObjectController
     {
         
     }

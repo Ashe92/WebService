@@ -1,4 +1,4 @@
-﻿namespace StudentWebService.Controllers
+﻿namespace StudentWebService.Controllers.Interfaces
 {
     public interface IObjectController
     {

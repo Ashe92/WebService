@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
+using MongoDB.Bson;
+using StudentWebService.Models.Interfaces;
 
 namespace StudentWebService.Models
 {
-    public class Course
+    public class Course : IObject
     {
+        public ObjectId ObjectId { get; set; }
+        public string Id { get; set; }
         public string CourseName { get; set; }
         public string LeadTeacher { get; set; }
-        public string StudentId { get; set; }
-        public List<Mark> ListMarks { get; set; }
+        public string Points { get; set; }
     }
 }
