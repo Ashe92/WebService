@@ -13,7 +13,7 @@ namespace StudentWebServiceConsole.Test
         readonly BaseRepository<Course> _repoCourse = new CourseRepository();
         readonly BaseRepository<Mark> _repoMark = new MarkRepository();
 
-        private static List<Course> CourseList = new List<Course>()
+        private List<Course> CourseList = new List<Course>()
         {
             new Course()
             {
@@ -45,7 +45,7 @@ namespace StudentWebServiceConsole.Test
             }
         };
 
-        private List<Student> listStudent = new List<Student>()
+        private List<Student> StudentList = new List<Student>()
         {
             new Student()
             {
@@ -66,20 +66,25 @@ namespace StudentWebServiceConsole.Test
 
         public void CreateCollections()
         {
-            //cerate uniquieindex for collection
-            CreateUniqueStudentIndex();
+            //Resfersh collections
+            RefreshDataBase();
 
             //add element to collections Student
-            listStudent.ForEach(item=> _repoStudent.AddObject(item));
+            StudentList.ForEach(item=> _repoStudent.AddObject(item));
+
+
+            //add element to collections Student
+           // CourseList.ForEach(item => _repoCourse.AddObject(item));
         }
 
-        private void CreateUniqueStudentIndex()
+        private void RefreshDataBase()
         {
-            var collection = _repoStudent.GetCollection();
-            collection.Indexes.CreateOne(new CreateIndexModel<Student>(Builders<Student>.IndexKeys.Ascending(i => i.Index), new CreateIndexOptions<Student>
-            {
-                Unique = true
-            }));
+            _repoStudent.DropCollection();
+            _repoCourse.DropCollection();
+            _repoMark.DropCollection();
+            _repoStudent.CreateCollection();
+            _repoCourse.CreateCollection();
+            _repoMark.CreateCollection();
         }
     }
 }

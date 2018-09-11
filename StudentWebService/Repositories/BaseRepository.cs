@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Clusters;
+using MongoDB.Driver.Core.Operations;
 using StudentWebService.Helpers;
 using StudentWebService.Models;
 using StudentWebService.Models.Interfaces;
@@ -15,18 +16,23 @@ namespace StudentWebService.Repositories
     public abstract class BaseRepository<TModel> where TModel : IObject
     {
         private IMongoClient _mongoClient;
-        public IMongoClient MongoClient  => _mongoClient == null ? _mongoClient :(_mongoClient = new  MongoClient(Constants.ConnectionString));
+        public IMongoClient MongoClient => _mongoClient ??(_mongoClient = GetClient());
 
         private IMongoDatabase _mongoDb;
-        public IMongoDatabase MongoDb => _mongoDb == null ? _mongoDb : (_mongoDb = MongoClient.GetDatabase(Constants.DatabaseName));
+        public IMongoDatabase MongoDb => _mongoDb ?? (_mongoDb = GetMongoDb());
 
         private IMongoCollection<TModel> _collection;
-        private readonly string _collectionName;
+        public readonly string CollectionName;
 
         protected BaseRepository(string collectionName)
         {
-            _collectionName = collectionName;
+            CollectionName = collectionName;
             GetCollection();
+        }
+       
+        private IMongoDatabase GetMongoDb()
+        {
+            return MongoClient.GetDatabase(Constants.DatabaseName);
         }
 
         private bool StartSession()
@@ -34,14 +40,30 @@ namespace StudentWebService.Repositories
             if (MongoClient.Cluster.Description.State == ClusterState.Connected)
                 return true;
             MongoClient.StartSession();
-
+            
             return MongoClient.Cluster.Description.State == ClusterState.Connected;
         }
-        
+
+        public IMongoClient GetClient()
+        {
+            return new MongoClient(Constants.ConnectionString);
+        }
+
+        public void DropCollection()
+        {
+            StartSession();
+            MongoDb.DropCollection(CollectionName);
+        }
+
+        public virtual void CreateCollection()
+        {
+            StartSession();
+            MongoDb.CreateCollection(CollectionName);
+        }
 
         public IMongoCollection<TModel> GetCollection()
         {
-            _collection = MongoDb.GetCollection<TModel>(_collectionName);
+            _collection = MongoDb.GetCollection<TModel>(CollectionName);
             return _collection;
         }
 

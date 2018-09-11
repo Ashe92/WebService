@@ -49,8 +49,8 @@ namespace StudentWebService.Models
         [IgnoreDataMember]
         public DateTime BirthDate
         {
-            get => DateTime.ParseExact(Birthdate, "dd/MM/yyyy",CultureInfo.InvariantCulture); 
-            set => Birthdate = value.ToString(CultureInfo.InvariantCulture);
+            get => DateTime.ParseExact(Birthdate, "dd/MM/yyyy",CultureInfo.InvariantCulture);
+            set => Birthdate = $"{value.Day.ToString().PadLeft(2,'0')}/{value.Month.ToString().PadLeft(2, '0')}/{value.Year}";
         }
 
 
