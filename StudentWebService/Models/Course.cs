@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using StudentWebService.Models.Interfaces;
 
 namespace StudentWebService.Models
@@ -8,8 +7,15 @@ namespace StudentWebService.Models
     {
         public ObjectId ObjectId { get; set; }
         public string Id { get; set; }
-        public string CourseName { get; set; }
+
+        public string CourseName
+        {
+            get => Id;
+            set => Id = value;
+        }
+
         public string LeadTeacher { get; set; }
+
         public string Points { get; set; }
     }
 }

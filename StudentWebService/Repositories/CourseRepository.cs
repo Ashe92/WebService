@@ -4,7 +4,7 @@ namespace StudentWebService.Repositories
 {
     public class CourseRepository :BaseRepository<Course>
     {
-        public CourseRepository() : base("Course")
+        public CourseRepository() : base("Courseeeee")
         {
         }
     }

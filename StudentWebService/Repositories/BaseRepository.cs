@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web.DynamicData;
-using System.Web.Mvc;
-using System.Web.Security;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using MongoDB.Driver.Core.Clusters;
-using MongoDB.Driver.Core.Operations;
 using StudentWebService.Helpers;
-using StudentWebService.Models;
 using StudentWebService.Models.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace StudentWebService.Repositories
 {
@@ -37,6 +31,8 @@ namespace StudentWebService.Repositories
 
         private bool StartSession()
         {
+            if (MongoClient.Cluster.Description.State == ClusterState.Disconnected)
+                throw new Exception($"Brak połączenia do bazy danych");
             if (MongoClient.Cluster.Description.State == ClusterState.Connected)
                 return true;
             MongoClient.StartSession();
@@ -65,6 +61,11 @@ namespace StudentWebService.Repositories
         {
             _collection = MongoDb.GetCollection<TModel>(CollectionName);
             return _collection;
+        }
+
+        public TModel GetObjectByFilter(FilterDefinition<TModel> filter)
+        {
+            return _collection.Find(filter).FirstOrDefault();
         }
 
         public TModel GetObject(string id)

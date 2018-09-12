@@ -9,10 +9,7 @@ namespace StudentWebServiceConsole.Test
 {
     public class InitMongoDb
     {
-        readonly BaseRepository<Student> _repoStudent = new StudentRepository();
-        readonly BaseRepository<Course> _repoCourse = new CourseRepository();
-        readonly BaseRepository<Mark> _repoMark = new MarkRepository();
-
+        
         private List<Course> CourseList = new List<Course>()
         {
             new Course()
@@ -70,7 +67,7 @@ namespace StudentWebServiceConsole.Test
             RefreshDataBase();
 
             //add element to collections Student
-            StudentList.ForEach(item=> _repoStudent.AddObject(item));
+            //StudentList.ForEach(item=> _repoStudent.AddObject(item));
 
 
             //add element to collections Student
@@ -79,12 +76,12 @@ namespace StudentWebServiceConsole.Test
 
         private void RefreshDataBase()
         {
-            _repoStudent.DropCollection();
-            _repoCourse.DropCollection();
-            _repoMark.DropCollection();
-            _repoStudent.CreateCollection();
-            _repoCourse.CreateCollection();
-            _repoMark.CreateCollection();
+            //_repoStudent.DropCollection();
+            //_repoCourse.DropCollection();
+            //_repoMark.DropCollection();
+            //_repoStudent.CreateCollection();
+            //_repoCourse.CreateCollection();
+            //_repoMark.CreateCollection();
         }
     }
 }

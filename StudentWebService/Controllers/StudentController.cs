@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using StudentWebService.Models;
-using System.Net.Http;
+﻿using StudentWebService.Controllers.Interfaces;
 using System.Web.Http;
-using StudentWebService.Controllers.Interfaces;
 
 namespace StudentWebService.Controllers
 {

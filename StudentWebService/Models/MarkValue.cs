@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using StudentWebService.Helpers;
+using System.Collections.Generic;
 using System.Linq;
-using StudentWebService.Helpers;
 
 namespace StudentWebService.Models
 {

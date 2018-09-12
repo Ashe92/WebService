@@ -1,7 +1,4 @@
-﻿using System.Runtime.Serialization;
-using System.Xml.Serialization;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
 
 namespace StudentWebService.Models.Interfaces
 {

@@ -143,6 +143,8 @@
     <Compile Include="Repositories\CourseRepository.cs" />
     <Compile Include="Repositories\MarkRepository.cs" />
     <Compile Include="Repositories\StudentRepository.cs" />
+    <Compile Include="Services\CourseService.cs" />
+    <Compile Include="Services\StudentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
