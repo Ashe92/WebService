@@ -83,19 +83,24 @@ namespace StudentWebService.Repositories
         public UpdateResult Update(string id, UpdateDefinition<TModel> updateObject )
         {
             StartSession();
-            return _collection.UpdateOne(item => item.Id == id, updateObject);
+            var result = _collection.UpdateOne(item => item.Id == id, updateObject);
+            GetCollection();
+            return result;
         }
 
         public DeleteResult Delete(string id)
         {
             StartSession();
-            return _collection.DeleteOne(item => item.Id == id);
+            var result = _collection.DeleteOne(item => item.Id == id);
+            GetCollection();
+            return result;
         }
 
         public void AddObject(TModel addElement)
         {
             StartSession();
             _collection.InsertOne(addElement);
+            GetCollection();
         }
     }
 }

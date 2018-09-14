@@ -16,6 +16,12 @@ namespace StudentWebService
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "OtherApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { controller = "Home", action = "Get", id = RouteParameter.Optional }
+            );
         }
     }
 }

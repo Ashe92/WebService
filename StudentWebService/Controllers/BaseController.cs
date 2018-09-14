@@ -11,40 +11,14 @@ namespace StudentWebService.Controllers
         // GET: api/Students
         [Route()]
         [HttpGet]
-        public IEnumerable<T> Get<T>()
+        public string Get()
         {
-            return new List<T>();
+            return "Main page";
         }
 
-        // GET: api/Students/5
-        [Route("{id}")]
-        [HttpGet]
-        public Object Get<T>(int id)
+        public string GetCurrentTime()
         {
-            return new object();
-        }
-
-        //Adding new// POST: api/Students
-        [HttpPost]
-        public void Post([FromBody]Student value)
-        {
-            //studentsList.Add(value);
-        }
-
-        // PUT: api/Students/5
-        [Route("{id}")]
-        [HttpPut]
-        public void Put<T>(int id, [FromBody]Object value)
-        {
-            Student update = new Student();
-        }
-
-        // DELETE: api/Students/5
-        [Route("{id}")]
-        [HttpDelete]
-        public void Delete(int id)
-        {
-
+            return DateTime.Now.ToString("T");
         }
     }
 }

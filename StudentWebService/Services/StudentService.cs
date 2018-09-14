@@ -28,6 +28,12 @@ namespace StudentWebService.Services
             return objects ?? throw new Exception($"Brak Studenta o indexie: {index}");
         }
 
+        public Student GetStudentByIndex(string index)
+        {
+            var objects = _repoStudent.GetObject(index);
+            return objects ?? throw new Exception($"Brak Studenta o indexie: {index}");
+        }
+
         public bool UpdateStudent(Student student)
         {
            var updateDefinition = Builders<Student>.Update
@@ -46,10 +52,15 @@ namespace StudentWebService.Services
             return collection;
         }
 
-        public bool DeleteStudent(long index)
+        public bool DeleteStudent(string index)
         {
-            var result = _repoStudent.Delete(index.ToString());
+            var result = _repoStudent.Delete(index);
             return result.DeletedCount != 0;
+        }
+
+        public void AddObject(Student value)
+        {
+            _repoStudent.AddObject(value);
         }
     }
 }
