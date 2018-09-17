@@ -3,15 +3,16 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using StudentWebService.Models;
 using StudentWebService.Repositories;
+using StudentWebService.Services.Interfaces;
 
 namespace StudentWebService.Services
 {
-    public class StudentService
+    public class StudentService : IObjectService
     {
         private readonly BaseRepository<Student> _repoStudent = new StudentRepository();
         private readonly CourseService _courseService = new CourseService();
 
-        public void AddCourseToStudentByName(long studentIndex, string CourseName )
+        public void AddCourseToStudentByName(long studentIndex, string CourseName)
         {
             var student = GetStudentByIndex(studentIndex);
             var course = _courseService.GetCourseByName(CourseName);
@@ -36,14 +37,14 @@ namespace StudentWebService.Services
 
         public bool UpdateStudent(Student student)
         {
-           var updateDefinition = Builders<Student>.Update
-                .Set(x => x.Name, student.Name)
-                .Set(x => x.Surname, student.Surname)
-                .Set(x => x.BirthDate, student.BirthDate)
-                .Set(x => x.Courses, student.Courses);
+            var updateDefinition = Builders<Student>.Update
+                 .Set(x => x.Name, student.Name)
+                 .Set(x => x.Surname, student.Surname)
+                 .Set(x => x.BirthDate, student.BirthDate)
+                 .Set(x => x.Courses, student.Courses);
 
-            var result =  _repoStudent.Update(student.Id, updateDefinition);
-            return result.ModifiedCount != 0; 
+            var result = _repoStudent.Update(student.Id, updateDefinition);
+            return result.ModifiedCount != 0;
         }
 
         public IMongoQueryable<Student> GetAllStudents()

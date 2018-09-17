@@ -1,10 +1,10 @@
-﻿using System;
+﻿using StudentWebService.Helpers;
+using StudentWebService.Models.Interfaces;
+using System;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using StudentWebService.Helpers;
-using StudentWebService.Models.Interfaces;
 
 namespace StudentWebService.Models
 {
@@ -21,7 +21,11 @@ namespace StudentWebService.Models
         public string Id
         {
             get => Id;
-            set => Id = $"{Evaluation},{StudentId},{CourseId}";
+            set
+            {
+                if (value == null) throw new ArgumentNullException(nameof(value));
+                Id = $"{Evaluation},{StudentId},{CourseId}";
+            }
         }
 
         public DateTime AddedDate { get; set; }

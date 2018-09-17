@@ -1,16 +1,18 @@
-﻿using MongoDB.Driver;
-using MongoDB.Driver.Core.Clusters;
-using StudentWebService.Helpers;
+﻿using StudentWebService.Helpers;
 using StudentWebService.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using MongoDB.Driver;
+using MongoDB.Driver.Core.Clusters;
 
 namespace StudentWebService.Repositories
 {
     public abstract class BaseRepository<TModel> where TModel : IObject
     {
         private IMongoClient _mongoClient;
-        public IMongoClient MongoClient => _mongoClient ??(_mongoClient = GetClient());
+        public IMongoClient MongoClient => _mongoClient ?? (_mongoClient = GetClient());
+
+        
 
         private IMongoDatabase _mongoDb;
         public IMongoDatabase MongoDb => _mongoDb ?? (_mongoDb = GetMongoDb());
@@ -23,7 +25,7 @@ namespace StudentWebService.Repositories
             CollectionName = collectionName;
             GetCollection();
         }
-       
+
         private IMongoDatabase GetMongoDb()
         {
             return MongoClient.GetDatabase(Constants.DatabaseName);
@@ -31,8 +33,8 @@ namespace StudentWebService.Repositories
 
         private bool StartSession()
         {
-            if (MongoClient.Cluster.Description.State == ClusterState.Disconnected)
-                throw new Exception($"Brak połączenia do bazy danych");
+            //if (MongoClient.Cluster.Description.State == ClusterState.Disconnected)
+              //  throw new Exception($"Brak połączenia do bazy danych");
             if (MongoClient.Cluster.Description.State == ClusterState.Connected)
                 return true;
             MongoClient.StartSession();
@@ -42,7 +44,14 @@ namespace StudentWebService.Repositories
 
         public IMongoClient GetClient()
         {
-            return new MongoClient(Constants.ConnectionString);
+            try
+            {
+                return new MongoClient(Constants.ConnectionString);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public void DropCollection()
@@ -77,10 +86,10 @@ namespace StudentWebService.Repositories
         public IEnumerable<TModel> GetFilteredCollection(FilterDefinition<TModel> filter)
         {
             StartSession();
-            return _collection.Find(filter).ToList(); 
+            return _collection.Find(filter).ToList();
         }
 
-        public UpdateResult Update(string id, UpdateDefinition<TModel> updateObject )
+        public UpdateResult Update(string id, UpdateDefinition<TModel> updateObject)
         {
             StartSession();
             var result = _collection.UpdateOne(item => item.Id == id, updateObject);

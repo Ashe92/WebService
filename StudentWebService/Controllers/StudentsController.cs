@@ -9,33 +9,35 @@ using System.Web.Http;
 
 namespace StudentWebService.Controllers
 {
-    [RoutePrefix("courses")]
-    public class CourseController : ApiController, IObjectController
+    [RoutePrefix("students")]
+    public class StudentsController: ApiController, IObjectController
     {
-        private readonly CourseService _courseService = new CourseService();
        
+        private readonly StudentService _studentService = new StudentService();
+
+        //GET: api/Students
         [HttpGet]
-        public HttpResponseMessage GetCourses()
+        public HttpResponseMessage GetAllObjects()
         {
             try
             {
-                var list = _courseService.GetAllCourses().ToList();
+                var list = _studentService.GetAllStudents().ToList();
 
-                return Request.CreateResponse(list == null ? HttpStatusCode.OK : HttpStatusCode.NotFound, list);
+                return Request.CreateResponse(list == null ? HttpStatusCode.OK : HttpStatusCode.NotFound,list);
             }
             catch (Exception ex)
             {
                 return Request.CreateResponse(HttpStatusCode.ExpectationFailed, ex.Message);
             }
         }
-
+        
         [Route("{id}")]
-        public HttpResponseMessage GetCourse(int id)
+        public HttpResponseMessage GetObject(int id)
         {
             try
             {
-                var student = _courseService.GetCourseByName(id.ToString());
-                return Request.CreateResponse(student == null ? HttpStatusCode.OK : HttpStatusCode.NotFound, student);
+                var student = _studentService.GetStudentByIndex(id.ToString());
+                return Request.CreateResponse(student == null ? HttpStatusCode.OK : HttpStatusCode.NotFound,student);
             }
             catch (Exception ex)
             {
@@ -43,13 +45,13 @@ namespace StudentWebService.Controllers
             }
         }
 
-        //Adding new// POST:
+        //Adding new// POST: api/Students
         [HttpPost]
-        public HttpResponseMessage Post([FromBody] Course value)
+        public HttpResponseMessage Post([FromBody] Student value)
         {
             try
             {
-                _courseService.AddCourse(value);
+                _studentService.AddObject(value);
                 return Request.CreateResponse(HttpStatusCode.Created);
             }
             catch (Exception ex)
@@ -59,14 +61,14 @@ namespace StudentWebService.Controllers
 
         }
 
-        // PUT:
+        // PUT: api/Students/5
         [Route("{id}")]
         [HttpPut]
-        public HttpResponseMessage Put(int id, [FromBody] Course value)
+        public HttpResponseMessage Put(int id, [FromBody] Student value)
         {
             try
             {
-                var result = _courseService.UpdateCourse(value);
+                var result = _studentService.UpdateStudent(value);
                 return Request.CreateResponse(result ? HttpStatusCode.OK : HttpStatusCode.NotModified);
             }
             catch (Exception ex)
@@ -82,7 +84,7 @@ namespace StudentWebService.Controllers
         {
             try
             {
-                var result = _courseService.DeleteCourse(id.ToString());
+                var result = _studentService.DeleteStudent(id.ToString());
                 return Request.CreateResponse(result ? HttpStatusCode.OK : HttpStatusCode.NotFound);
             }
             catch (Exception ex)
@@ -90,5 +92,6 @@ namespace StudentWebService.Controllers
                 return Request.CreateResponse(HttpStatusCode.ExpectationFailed, ex.Message);
             }
         }
+        
     }
 }

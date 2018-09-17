@@ -6,8 +6,6 @@ namespace StudentWebService
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -19,8 +17,8 @@ namespace StudentWebService
 
             config.Routes.MapHttpRoute(
                 name: "OtherApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { controller = "Home", action = "Get", id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{index}",
+                defaults: new { id = RouteParameter.Optional }
             );
         }
     }

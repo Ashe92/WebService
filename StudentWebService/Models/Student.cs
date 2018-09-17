@@ -1,11 +1,11 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using StudentWebService.Models.Interfaces;
+﻿using StudentWebService.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace StudentWebService.Models
 {
@@ -22,8 +22,8 @@ namespace StudentWebService.Models
             set;
         }
 
-        [DataMember]
-        [BsonRequired]
+        //[DataMember]
+        //[BsonRequired]
         public long Index
         {
             get => Convert.ToInt64(Id);
@@ -33,6 +33,7 @@ namespace StudentWebService.Models
         [DataMember]
         [BsonRequired]
         public string Name { get; set; }
+
         [DataMember]
         [BsonRequired]
         public string Surname { get; set; }
@@ -47,7 +48,7 @@ namespace StudentWebService.Models
 
         [DataMember]
         [BsonRequired]
-        private string Birthdate {get;set;}
+        private string Birthdate { get; set; }
 
         [XmlIgnore]
         [DataMember]

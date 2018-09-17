@@ -1,8 +1,8 @@
-﻿using System;
+﻿using StudentWebService.Models;
+using StudentWebService.Repositories;
+using System;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using StudentWebService.Models;
-using StudentWebService.Repositories;
 
 namespace StudentWebService.Services
 {
@@ -16,14 +16,14 @@ namespace StudentWebService.Services
             return objects ?? throw new Exception($"Brak kursu o nazwie: {name}");
         }
 
-        public bool UpdateStudent(Course course)
+        public bool UpdateCourse(Course course)
         {
-           var updateDefinition = Builders<Course>.Update
-                .Set(x => x.LeadTeacher, course.LeadTeacher)
-                .Set(x => x.Points, course.Points);
+            var updateDefinition = Builders<Course>.Update
+                 .Set(x => x.LeadTeacher, course.LeadTeacher)
+                 .Set(x => x.Points, course.Points);
 
-            var result =  _repoCourse.Update(course.Id, updateDefinition);
-            return result.ModifiedCount != 0; 
+            var result = _repoCourse.Update(course.Id, updateDefinition);
+            return result.ModifiedCount != 0;
         }
 
         public IMongoQueryable<Course> GetAllCourses()
@@ -36,6 +36,11 @@ namespace StudentWebService.Services
         {
             var result = _repoCourse.Delete(name);
             return result.DeletedCount != 0;
+        }
+
+        public void AddCourse(Course value)
+        {
+            _repoCourse.AddObject(value);
         }
     }
 }

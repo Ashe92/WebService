@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
-using MongoDB.Driver;
 using StudentWebService.Models;
 using StudentWebService.Repositories;
 
-namespace StudentWebServiceConsole.Test
+namespace StudentWebService.Console.Test.InitDataBase
 {
     public class InitMongoDb
     {
-        
+        private readonly BaseRepository<Student> _repoStudent  = new StudentRepository();
+
         private List<Course> CourseList = new List<Course>()
         {
             new Course()
@@ -65,9 +65,9 @@ namespace StudentWebServiceConsole.Test
         {
             //Resfersh collections
             RefreshDataBase();
-
+            var test = _repoStudent.GetCollection();
             //add element to collections Student
-            //StudentList.ForEach(item=> _repoStudent.AddObject(item));
+            StudentList.ForEach(item=> _repoStudent.AddObject(item));
 
 
             //add element to collections Student
@@ -76,10 +76,10 @@ namespace StudentWebServiceConsole.Test
 
         private void RefreshDataBase()
         {
-            //_repoStudent.DropCollection();
+            _repoStudent.DropCollection();
             //_repoCourse.DropCollection();
             //_repoMark.DropCollection();
-            //_repoStudent.CreateCollection();
+            _repoStudent.CreateCollection();
             //_repoCourse.CreateCollection();
             //_repoMark.CreateCollection();
         }

@@ -1,25 +1,25 @@
-﻿using MongoDB.Driver;
-using StudentWebService.Controllers.Interfaces;
-using StudentWebService.Models;
-using StudentWebService.Services;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using MongoDB.Driver;
+using StudentWebService.Controllers.Interfaces;
+using StudentWebService.Models;
+using StudentWebService.Services;
 
 namespace StudentWebService.Controllers
 {
-    [RoutePrefix("courses")]
-    public class CourseController : ApiController, IObjectController
+    [RoutePrefix("marks")]
+    public class MarkController : ApiController, IObjectController
     {
-        private readonly CourseService _courseService = new CourseService();
-       
+        private readonly MarkService _markService = new MarkService();
+
         [HttpGet]
-        public HttpResponseMessage GetCourses()
+        public HttpResponseMessage GetAllObjects()
         {
             try
             {
-                var list = _courseService.GetAllCourses().ToList();
+                var list = _markService.GetAllObjects().ToList();
 
                 return Request.CreateResponse(list == null ? HttpStatusCode.OK : HttpStatusCode.NotFound, list);
             }
@@ -30,11 +30,11 @@ namespace StudentWebService.Controllers
         }
 
         [Route("{id}")]
-        public HttpResponseMessage GetCourse(int id)
+        public HttpResponseMessage GetObject(int id)
         {
             try
             {
-                var student = _courseService.GetCourseByName(id.ToString());
+                var student = _markService.GetObjectByName(id.ToString());
                 return Request.CreateResponse(student == null ? HttpStatusCode.OK : HttpStatusCode.NotFound, student);
             }
             catch (Exception ex)
@@ -45,11 +45,11 @@ namespace StudentWebService.Controllers
 
         //Adding new// POST:
         [HttpPost]
-        public HttpResponseMessage Post([FromBody] Course value)
+        public HttpResponseMessage Post([FromBody] Mark value)
         {
             try
             {
-                _courseService.AddCourse(value);
+                _markService.AddObject(value);
                 return Request.CreateResponse(HttpStatusCode.Created);
             }
             catch (Exception ex)
@@ -62,11 +62,11 @@ namespace StudentWebService.Controllers
         // PUT:
         [Route("{id}")]
         [HttpPut]
-        public HttpResponseMessage Put(int id, [FromBody] Course value)
+        public HttpResponseMessage Put(int id, [FromBody] Mark value)
         {
             try
             {
-                var result = _courseService.UpdateCourse(value);
+                var result = _markService.UpdateObject(value);
                 return Request.CreateResponse(result ? HttpStatusCode.OK : HttpStatusCode.NotModified);
             }
             catch (Exception ex)
@@ -82,7 +82,7 @@ namespace StudentWebService.Controllers
         {
             try
             {
-                var result = _courseService.DeleteCourse(id.ToString());
+                var result = _markService.DeleteObject(id.ToString());
                 return Request.CreateResponse(result ? HttpStatusCode.OK : HttpStatusCode.NotFound);
             }
             catch (Exception ex)
