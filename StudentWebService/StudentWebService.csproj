@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Views\HomePage\index.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -84,7 +85,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\HomePage\" />
     <Folder Include="Views\StudentView\" />
   </ItemGroup>
   <ItemGroup>
