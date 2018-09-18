@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using StudentWebService.Models;
 using StudentWebService.Repositories;
 using StudentWebService.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StudentWebService.Services
 {
@@ -12,21 +14,19 @@ namespace StudentWebService.Services
         private readonly BaseRepository<Student> _repoStudent = new StudentRepository();
         private readonly CourseService _courseService = new CourseService();
 
-        public void AddCourseToStudentByName(long studentIndex, string CourseName)
+        public void AddCourseToStudentByName(string studentIndex, string courseName)
         {
             var student = GetStudentByIndex(studentIndex);
-            var course = _courseService.GetCourseByName(CourseName);
+            var course = _courseService.GetCourseByName(courseName);
 
             student.Courses.Add(course);
             UpdateStudent(student);
         }
 
-        public Student GetStudentByIndex(long index)
+        public List<Student> GetObjectByFilter(FilterDefinition<Student> filter)
         {
-            var builder = Builders<Student>.Filter;
-            var filter = builder.Eq(item => item.Index, index);
-            var objects = _repoStudent.GetObjectByFilter(filter);
-            return objects ?? throw new Exception($"Brak Studenta o indexie: {index}");
+            var objects = _repoStudent.GetFilteredCollection(filter).ToList();
+            return objects.Count == 0 ?throw new Exception($"Brak Studenta o danych zmiennych: {filter.ToJson()}") : objects;
         }
 
         public Student GetStudentByIndex(string index)
@@ -44,12 +44,12 @@ namespace StudentWebService.Services
                  .Set(x => x.Courses, student.Courses);
 
             var result = _repoStudent.Update(student.Id, updateDefinition);
-            return result.ModifiedCount != 0;
+            return result.IsAcknowledged;
         }
 
-        public IMongoQueryable<Student> GetAllStudents()
+        public List<Student> GetAllObjects()
         {
-            var collection = _repoStudent.GetCollection().AsQueryable();
+            var collection = _repoStudent.GetCollection().AsQueryable().ToList();
             return collection;
         }
 

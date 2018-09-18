@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
+using StudentWebService.Helpers;
 using StudentWebService.Models;
 using StudentWebService.Repositories;
 
@@ -9,6 +10,8 @@ namespace StudentWebService.Console.Test.InitDataBase
     public class InitMongoDb
     {
         private readonly BaseRepository<Student> _repoStudent  = new StudentRepository();
+        private readonly BaseRepository<Course> _repoCourse = new CourseRepository();
+        private readonly BaseRepository<Mark> _repoMark = new MarkRepository();
 
         private List<Course> CourseList = new List<Course>()
         {
@@ -60,6 +63,16 @@ namespace StudentWebService.Console.Test.InitDataBase
             },
         };
 
+        private List<Mark> MarksList = new List<Mark>()
+        {
+            new Mark()
+            {
+                AddedDate = DateTime.Today,
+                EvaluationType = MarkValuesEnum.Three,
+                StudentId = "12345",
+                CourseId = "CSS Course"
+            }
+        };
 
         public void CreateCollections()
         {
@@ -69,19 +82,20 @@ namespace StudentWebService.Console.Test.InitDataBase
             //add element to collections Student
             StudentList.ForEach(item=> _repoStudent.AddObject(item));
 
-
             //add element to collections Student
-           // CourseList.ForEach(item => _repoCourse.AddObject(item));
+            CourseList.ForEach(item => _repoCourse.AddObject(item));
+
+            MarksList.ForEach(item => _repoMark.AddObject(item));
         }
 
         private void RefreshDataBase()
         {
             _repoStudent.DropCollection();
-            //_repoCourse.DropCollection();
-            //_repoMark.DropCollection();
+            _repoCourse.DropCollection();
+            _repoMark.DropCollection();
             _repoStudent.CreateCollection();
-            //_repoCourse.CreateCollection();
-            //_repoMark.CreateCollection();
+            _repoCourse.CreateCollection();
+            _repoMark.CreateCollection();
         }
     }
 }

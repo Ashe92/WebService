@@ -72,11 +72,6 @@ namespace StudentWebService.Repositories
             return _collection;
         }
 
-        public TModel GetObjectByFilter(FilterDefinition<TModel> filter)
-        {
-            return _collection.Find(filter).FirstOrDefault();
-        }
-
         public TModel GetObject(string id)
         {
             StartSession();

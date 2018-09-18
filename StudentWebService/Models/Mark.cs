@@ -1,10 +1,11 @@
 ﻿using StudentWebService.Helpers;
-using StudentWebService.Models.Interfaces;
 using System;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using StudentWebService.Enums;
+using StudentWebService.Models.Interfaces;
 
 namespace StudentWebService.Models
 {
@@ -20,28 +21,25 @@ namespace StudentWebService.Models
 
         public string Id
         {
-            get => Id;
-            set
-            {
-                if (value == null) throw new ArgumentNullException(nameof(value));
-                Id = $"{Evaluation},{StudentId},{CourseId}";
-            }
+            get => $"{EvaluationType},{StudentId},{CourseId}";
+            set => Id = value;
         }
 
+        [BsonDateTimeOptions]
         public DateTime AddedDate { get; set; }
 
-        private decimal _evaluation
+        public decimal Evaliation
         {
             get;
             set;
         }
 
         [XmlIgnore]
-        [IgnoreDataMember]
-        public MarkValuesEnum Evaluation
+        [BsonIgnore]
+        public MarkValuesEnum EvaluationType
         {
-            get => MarkValue.GetValue(_evaluation);
-            set => _evaluation = MarkValue.GetValue(value);
+            get => MarkValue.GetValue(Evaliation);
+            set => Evaliation = MarkValue.GetValue(value);
         }
     }
 }

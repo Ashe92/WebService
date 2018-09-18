@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StudentWebService.Models
+namespace StudentWebService.Enums
 {
     public static class MarkValue
     {
