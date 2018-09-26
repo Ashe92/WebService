@@ -43,7 +43,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Views\HomePage\index.html" />
+    <Content Include="Views\index.html" />
+    <Content Include="Views\images\logo.png" />
+    <Content Include="Views\scripts\jquery-3.3.1.js" />
+    <Content Include="Views\scripts\knockout-3.4.2.js" />
+    <Content Include="Views\scripts\knockout.mapping-latest.js" />
+    <Content Include="Views\scripts\knockout.mapping.js" />
+    <Content Include="Views\scripts\kdyndul-script.js" />
+    <Content Include="Views\styles\icons.css" />
+    <Content Include="Views\styles\style.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -84,9 +92,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\StudentView\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="DnsClient, Version=1.2.0.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.2.0\lib\net45\DnsClient.dll</HintPath>

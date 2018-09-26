@@ -17,21 +17,21 @@ namespace StudentWebService.Controllers
 
         [Route("")]
         [HttpGet]
-        public IHttpActionResult GetObjectByParameters(string name = null, string leadTeacher = null, string points = null, string method ="more")
+        public IHttpActionResult GetObjectByParameters(string id = null, string leadTeacher = null, string points = null, string method ="more")
         {
             try
             {
                 var builder = Builders<Course>.Filter;
                 FilterDefinition<Course> filter = null;
-                if (name != null)
+                if (!string.IsNullOrEmpty(id))
                 {
-                    filter = builder.Eq(item => item.CourseName, name);
+                    filter = builder.Eq(item => item.CourseName, id);
                 }
-                if (leadTeacher != null)
+                if (!string.IsNullOrEmpty(leadTeacher))
                 {
                     filter = filter == null ? builder.Eq(item => item.LeadTeacher, leadTeacher) : filter & builder.Eq(item => item.LeadTeacher, leadTeacher);
                 }
-                if (points != null)
+                if (!string.IsNullOrEmpty(points))
                 {
                     if (method == "more")
                     {
@@ -77,9 +77,9 @@ namespace StudentWebService.Controllers
             }
         }
 
-        [Route("{id}/students", Name = "GetCourseByName")]
+        [Route("{id}/students")]
         [HttpGet]
-        public IHttpActionResult GetStudentsForCurses(string id)
+        public IHttpActionResult GetStudentsForCourses(string id)
         {
             try
             {

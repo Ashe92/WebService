@@ -16,13 +16,13 @@ namespace StudentWebService.Services
         public Mark GetObjectById(string Id)
         {
             var objects = _repoMark.GetObject(Id);
-            return objects ?? throw new Exception($"Brak oceny o id: {Id}");
+            return objects;
         }
 
         public List<Mark> GetObjectByFilter(FilterDefinition<Mark> filter)
         {
             var objects = _repoMark.GetFilteredCollection(filter).ToList();
-            return objects.Count == 0 ? throw new Exception($"Brak oceny o danych zmiennych: {filter.ToJson()}") : objects;
+            return objects;
         }
 
         public bool UpdateObject(Mark mark)

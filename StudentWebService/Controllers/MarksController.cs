@@ -33,11 +33,11 @@ namespace StudentWebService.Controllers
                 {
                     if (method == "more")
                     {
-                        filter = filter == null ? builder.Where(item => item.Evaliation > Convert.ToDecimal(evaluation)) : filter & builder.Where(item => item.Evaliation > Convert.ToDecimal(evaluation));
+                        filter = filter == null ? builder.Where(item => item.Evaluation > Convert.ToDecimal(evaluation)) : filter & builder.Where(item => item.Evaluation > Convert.ToDecimal(evaluation));
                     }
                     else
                     {
-                        filter = filter == null ? builder.Where(item => item.Evaliation < Convert.ToDecimal(evaluation)) : filter & builder.Where(item => item.Evaliation < Convert.ToDecimal(evaluation));
+                        filter = filter == null ? builder.Where(item => item.Evaluation < Convert.ToDecimal(evaluation)) : filter & builder.Where(item => item.Evaluation < Convert.ToDecimal(evaluation));
                     }
                 }
 

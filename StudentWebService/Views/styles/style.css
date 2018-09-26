@@ -1,0 +1,163 @@
+
+body {
+    font-size: 1em;
+    font-family: 'Arial', Helvetica, Geneva, Verdana, sans-serif;
+}
+
+main {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0;
+    background-image: linear-gradient(to top, #EAFFF9, #BEE8CA, #9BBDAE);
+}
+
+main section {
+    display: none;
+}
+
+main section:target {
+    display: block;
+    border-left: 2px solid #2f403c;
+    height: 100%;
+    background-image: linear-gradient(to top, #9BBDAE, #84A194);
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+table {
+    border-spacing: 0;
+    justify-content: center;
+    padding: 0.5em;
+    margin: 10px;
+    background: #161F1D;
+    color: #A7C28F;
+}
+input {
+    background: #A7C28F;
+}
+
+select {
+    background: #A7C28F;
+}
+
+table tr:hover {
+    border: 5px solid black;
+    background: #DDFFE2;
+}
+
+table tr:nth-child(odd) {
+    background: #3A4F4A;
+    color: #EAFFF9;
+}
+
+.table-row-options {
+     display: block;
+}
+
+input: invalid {
+    border: 2px solid red;
+}
+
+a {
+    text-decoration: none;
+    color: white ;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #3B6138;
+}
+
+header {
+    text-align: left;
+    padding: 0 0.5em;
+    margin: -16px 0;
+}
+
+#main-title {
+    padding: 2px;
+}
+
+#menu-aside {
+    padding: 1.5em;
+    background-image: linear-gradient(to top, #9BBDAE, #84A194);
+}
+
+#footer {
+    padding: 0.25em;
+    background-image: linear-gradient(to top, #EAFFF9, #BEE8CA, #9BBDAE);
+}
+
+.header {
+    text-align: center;
+    background: #84A194;
+    color: #3B6138;
+    line-height: 200%;
+}
+
+.return {
+    padding: 1em 0.5em;
+}
+.menu-element {
+    display: block;
+    text-align: center;
+    padding: 0.5em 0;
+}
+
+.menu-element:visited {
+    color: inherit;
+}
+
+.editor {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+}
+
+.editor input {
+    font-size: 1em;
+}
+
+.editor > * {
+    margin: 10px;
+}
+
+@media all and (min-width: 800px) {
+    #header {
+        order: 1;
+    }
+
+    #menu-aside {
+        width: 200px;
+        flex: 0 auto;
+        order: 2;
+    }
+
+    #main-body {
+        flex: 2 0px;
+        order: 3;
+    }
+
+    #footer {
+        order: 4;
+    }
+}
+
+@media print {
+    #header, #container-sidenav, .tableFilter, .add-link, footer {
+        display: none;
+    }
+
+    td {
+        border-top: 2px solid black;
+        font-size: 0.8em;
+    }
+
+    th {
+        font-size: 1em;
+    }
+}

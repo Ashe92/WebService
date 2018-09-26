@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 using StudentWebService.Models.Interfaces;
 
 namespace StudentWebService.Models
@@ -36,15 +37,14 @@ namespace StudentWebService.Models
         public string Surname { get; set; }
 
         [DataMember]
-        public List<Course> Courses
+        public List<MongoDBRef> Courses
         {
-            get => _courses ?? new List<Course>();
+            get => _courses ?? new List<MongoDBRef>();
             set => _courses = value;
         }
 
+        private List<MongoDBRef> _courses;
 
-        private List<Course> _courses;
-        
         [BsonDateTimeOptions]
         public DateTime BirthDate { get; set; }
 

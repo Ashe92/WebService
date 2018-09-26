@@ -19,33 +19,34 @@ namespace StudentWebService.Controllers
 
         [Route("")]
         [HttpGet]
-        public IHttpActionResult GetObjectByParameters(string index = null, string name = null, string surname = null, string method = "after", DateTime? birthdate = null)
+        public IHttpActionResult GetObjectByParameters(string id = null, string name = null, string surname = null, string method = "after", string birthdate = null)
         {
             try
             {
                 var builder = Builders<Student>.Filter;
                 FilterDefinition<Student> filter = null;
-                if (index != null)
+                if (!string.IsNullOrEmpty(id))
                 {
-                    filter = builder.Eq(item => item.Id, index);
+                    filter = builder.Eq(item => item.Id, id);
                 }
-                if (name != null)
+                if (!string.IsNullOrEmpty(name))
                 {
                     filter = filter == null ? builder.Eq(item => item.Name, name) : filter & builder.Eq(item => item.Name, name);
                 }
-                if (surname != null)
+                if (!string.IsNullOrEmpty(surname ))
                 {
                     filter = filter == null ? builder.Eq(item => item.Surname, surname) : filter & builder.Eq(item => item.Surname, surname);
                 }
-                if (birthdate != null)
+                if (!string.IsNullOrEmpty(birthdate))
                 {
+                    var date = DateTime.Parse(birthdate);
                     if (method == "after")
                     {
-                        filter = filter == null ? builder.Where(item => item.BirthDate > birthdate) : filter & builder.Where(item => item.BirthDate > birthdate);
+                        filter = filter == null ? builder.Where(item => item.BirthDate > date) : filter & builder.Where(item => item.BirthDate > date);
                     }
                     else
                     {
-                        filter = filter == null ? builder.Where(item => item.BirthDate < birthdate) : filter & builder.Where(item => item.BirthDate < birthdate);
+                        filter = filter == null ? builder.Where(item => item.BirthDate < date) : filter & builder.Where(item => item.BirthDate < date);
                     }
                 }
 
@@ -69,11 +70,12 @@ namespace StudentWebService.Controllers
         {
             try
             {
-                var student = _studentService.GetStudentByIndex(id.ToString());
+                var courses = _studentService.GetStudentCourses(id.ToString());
 
-                if (student == null)
+                if (courses.Count != 0)
                 {
-                    return Ok(student.Courses);
+
+                    return Ok(courses);
                 }
                 return NotFound();
             }

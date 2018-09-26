@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/icons.css">
+    <link rel="stylesheet" type="text/css" href="styles/print.css">
+
+    <script type="text/javascript" src="scripts/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="scripts/knockout-3.4.2.js"></script>
+    <script type="text/javascript" src="scripts/knockout.mapping.js"></script>
+    <script type="text/javascript" src="scripts/kdyndul-script.js"></script>
+
+    <title>Student Web Service - Karolina Dyndul</title>
+</head>
+<body>
+    <header class="header">
+        <img id="logo" src="images/logo.png" alt="Logo" />
+        <p id="main-title">Student Web Service - Karolina Dyndul</p>
+    </header>
+    <main>
+        <aside id="menu-aside">
+            <nav>
+                <a class="menu-element" href="#home">Home</a>
+                <a class="menu-element" href="#students" onclick="GetStudents();">Students</a>
+                <a class="menu-element" href="#courses" onclick="GetCourses();">Courses</a>
+            </nav>
+        </aside>
+        <div id="main-body">
+            <section id="home">
+                <header>
+                    <h2>Home</h2>
+                </header>
+                <div >
+                    <a href="https://www.google.pl">Link do google</a>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed volutpat nisl. Suspendisse dui nunc, suscipit vel odio eu, feugiat imperdiet enim. Sed accumsan, lorem ac finibus condimentum, elit mauris egestas leo, sit amet efficitur ipsum metus in justo. In quis faucibus odio. Phasellus tempus elit ante, eu ultricies massa fermentum non. Curabitur iaculis molestie luctus. Aenean vel ante ac lectus eleifend rutrum id ac dolor. Cras in ultrices eros. Praesent sit amet ante suscipit ex tincidunt rutrum at quis tortor. Proin sit amet bibendum tortor. Nunc id consectetur sem, a luctus erat. Praesent interdum, sem in efficitur efficitur, libero nulla ultricies felis, eu dictum lorem magna maximus justo. Pellentesque ut tortor risus. Cras suscipit dolor sit amet nisl imperdiet mattis.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed volutpat nisl. Suspendisse dui nunc, suscipit vel odio eu, feugiat imperdiet enim. Sed accumsan, lorem ac finibus condimentum, elit mauris egestas leo, sit amet efficitur ipsum metus in justo. In quis faucibus odio. Phasellus tempus elit ante, eu ultricies massa fermentum non. Curabitur iaculis molestie luctus. Aenean vel ante ac lectus eleifend rutrum id ac dolor. Cras in ultrices eros. Praesent sit amet ante suscipit ex tincidunt rutrum at quis tortor. Proin sit amet bibendum tortor. Nunc id consectetur sem, a luctus erat. Praesent interdum, sem in efficitur efficitur, libero nulla ultricies felis, eu dictum lorem magna maximus justo. Pellentesque ut tortor risus. Cras suscipit dolor sit amet nisl imperdiet mattis.</p>
+                </div>
+            </section>
+
+            <section id="students">
+                <header>
+                    <h2>Studenci</h2>
+                </header>
+                <div id="student-content">
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th><a class="add-link" href="#student-editor" onclick="ClearStudentEditor()">Dodaj nowego studenta</a></th>
+                        </tr>
+                        <!--header-->
+                        <tr>
+                            <th>
+                                Indeks: <br />
+                                <input class="tableFilter studentsFilter" placeholder="filtruj po indeksie" data-bind="textInput: IndexFilter">
+                            </th>
+                            <th>
+                                Imię: <br />
+                                <input class="tableFilter studentsFilter" placeholder="filtruj po imieniu" data-bind="textInput: NameFilter">
+                            </th>
+                            <th>
+                                Nazwisko: <br />
+                                <input class="tableFilter studentsFilter" placeholder="filtruj po naziwsku" data-bind="textInput: SurnameFilter">
+                            </th>
+                            <th>
+                                Urodziny: <br />
+                                <input class="tableFilter studentsFilter" placeholder="filtruj po indeksie" data-bind="textInput: BirthdateFilter">
+
+                            </th>
+                            <th>
+                                Metoda: <br />
+                                <select class="tableFilter studentsFilter" data-bind="textInput: MethodFilter">
+                                    <option value="before">Szukaj przed podaną datą</option>
+                                    <option value="after">Szukaj po podanej dacie</option>
+                                </select>
+                            </th>
+                        </tr>
+                        <!--data-->
+                        <tbody data-bind="foreach: list">
+                            <tr >
+                                <td data-bind="text: Index"></td>
+                                <td data-bind="text: Name"></td>
+                                <td data-bind="text: Surname"></td>
+                                <td data-bind="text: BirthDate"></td>
+                                <td class="icon-container-row list-options">
+                                    <a href="#student-details" class="icon details-icon" data-bind="attr: { 'data-id': $id }" onclick="GetStudentDetails(this.dataset.id)"></a>
+                                    <a href="#student-courses" class="icon course-icon" data-bind="attr: { 'data-id': $id }" onclick="GetStudentCourses(this.dataset.id)"></a>
+                                    <a href="#student-editor" class="icon edit-icon" data-bind="attr: { 'data-id': $id }" onclick="GetStudentEditor(this.dataset.id)"></a>
+                                    <a class="icon delete-icon" data-bind="attr: { 'data-studentId': id }" onclick="DeleteStudent(this.dataset.id)"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="student-details">
+                <a class="return" href="#students">Powróć do listy studentów</a>
+                <header>
+                    <h2>Szczegóły studenta</h2>
+                </header>
+                <label>Index:</label>
+                <span data-bind="text: Index"></span>
+                <label>Imię:</label>
+                <span data-bind="text: Name"></span>
+                <label>Nazwisko:</label>
+                <span data-bind="text: Surname"></span>
+                <label>Urodziny:</label>
+                <span data-bind="text: BirthDate"></span>
+            </section>
+
+            <section id="student-editor">
+                <a class="return" href="#students">Powróć do listy studentów</a>
+                <header>
+                    <h2>Dodaj-edytuj studetna</h2>
+                </header>
+                <form id="student-form" class="editor" onsubmit="CreateUpdateStudent()">
+                    <label>Indeks:</label>
+                    <input type="number" data-bind="textInput: Index" required="required" placeholder="12345" />
+                    <span data-bind="text: Index"></span>
+                    <label>Imię:</label>
+                    <input type="text" data-bind="value: Name" required="required" placeholder="Karolina" />
+                    <label>Nazwisko:</label>
+                    <input type="text" data-bind="value: Surname" required="required" placeholder="Dyndul" />
+                    <label>Urodziny:</label>
+                    <input type="date" data-bind="value: BirthDate" required="required" />
+                    <input type="submit">
+                </form>
+            </section>
+
+            <section id="courses">
+                <header>
+                    <h2>Kursy</h2>
+                </header>
+                <div id="courses-content">
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"> <a class="add-link" href="#course-editor" onclick="ClearCoursesEditor()">Dodaj nowy kurs</a></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Nazwa kursu: <br />
+                                <input class="tableFilter" placeholder="filtruj po nazwie" data-bind="textInput: CourseNameFilter">
+                            </th>
+                            <th>
+                                Prowadzący: <br />
+                                <input class="tableFilter" placeholder="filtruj po imieniu" data-bind="textInput: LeadTeacherFilter">
+                            </th>
+                            <th colspan="2">
+                                Punkty: <br />
+                                <input class="tableFilter" placeholder="filtruj po naziwsku" data-bind="textInput: PointsFilter">
+                            </th>
+                        </tr>
+                        <tbody data-bind="foreach: list">
+                            <tr>
+                                <td data-bind="text: CourseName"></td>
+                                <td data-bind="text: LeadTeacher"> </td>
+                                <td data-bind="text: Points"></td>
+                                <td class="icon-container-row list-options">
+                                    <a href="#course-details" class="icon details-icon" data-bind="attr: { 'data-id': $id }" onclick="GetCurseDetails(this.dataset.id)"></a>
+                                    <a href="#course-editor" class="icon edit-icon" data-bind="attr: { 'data-id': $id }" onclick="GetCourseEditor(this.dataset.id)"></a>
+                                    <a class="icon delete-icon" data-bind="attr: { 'data-courseId': id }" onclick="DeleteCourse(this.dataset.id)"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="course-details">
+                <a class="return" href="#courses">Powróć do listy kursów</a>
+                <header>
+                    <h2>Dodaj-edytuj studetna</h2>
+                </header>
+                <label>Nazwa kursu: </label>
+                <span data-bind="text: CourseName"></span>
+                <label>Prowadzący: </label>
+                <span data-bind="text: LeadTeacher"></span>
+                <label>Punkty: </label>
+                <span data-bind="text: Points"></span>
+            </section>
+
+            <section id="course-editor">
+                <a  class="return" href="#courses">Powróć do listy kursów</a>
+                <header>
+                    <h2>Dodaj-edytuj kurs</h2>
+                </header>
+                <form id="course-form" class="editor" onsubmit="CreateUpdateCourse()">
+                    <label>Nazwa kursu:</label>
+                    <input type="text" data-bind="textInput: CourseName"
+                           required="required"
+                           placeholder="kurs css" />
+                    <label>Prowadzący:</label>
+                    <input type="text"
+                           data-bind="value: LeadTeacher"
+                           required="required"
+                           placeholder="Karolina Dyndul" />
+                    <label>Punkty:</label>
+                    <input type="text"
+                           data-bind="value: Points"
+                           required="required"
+                           placeholder="30" />
+                    <input type="submit">
+                </form>
+            </section>
+
+            <section id="student-courses-add">
+                <a class="return" href="#students">Powróć do listy studentów</a>
+                <header>
+                    <h2>Dodaj</h2>
+                </header>
+
+                <form id="student-course-add" class="editor" onsubmit="CreateStudentCourse()">
+                    <p>Course:</p>
+                    <select data-bind="options: studentCoursesList.list,
+                        optionsText: function(item) {
+                            return item.CourseName;
+                        },
+                        value: selectedCourse,
+                        optionsCaption: 'Choose course...'"></select>
+                    <input type="submit">
+                </form>
+            </section>
+            
+            <section id="student-courses">
+                <header>
+                    <h2>Kursy</h2>
+                </header>
+                <div>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th> <a class="add-link" href="#courses-editor" onclick="ClearCoursesEditor()">Dodaj nowy kurs</a></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Nazwa kursu: <br />
+                            </th>
+                            <th>
+                                Prowadzący: <br />
+                            </th>
+                            <th >
+                                Punkty: <br />
+                            </th>
+                        </tr>
+                        <tr>
+                            <td data-bind="text: CourseName"></td>
+                            <td data-bind="text: LeadTeacher"> </td>
+                            <td data-bind="text: Points"></td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <section id="marks">
+                <header>
+                    <h2>Oceny</h2>
+                </header>
+                <div></div>
+            </section>
+        </div>
+    </main>
+    <footer id="footer">
+        <p>&copy; 2018 Made By -Karolina Dyndul</p>
+        <p>Index: 138553</p>
+        <p>Em@ail: karolina.dyndul@student.put.poznan.pl</p>
+
+        <h4> Powiązane strony:</h4>
+        <p><a href="https://www4.put.poznan.pl/pl">Strona uczelni</a></p>
+    </footer>
+</body>
+
+</html>

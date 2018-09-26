@@ -11,27 +11,30 @@ namespace StudentWebService.Services
 {
     public class CourseService : IObjectService
     {
-        private readonly BaseRepository<Course> _repoCourse =new CourseRepository();
-        private readonly StudentService _studentService = new StudentService();
+        private BaseRepository<Course> _repoCourse;
+        public BaseRepository<Course> CourseRepository => _repoCourse ?? (_repoCourse = new CourseRepository());
+
+        private StudentService _courseService;
+        public StudentService StudentService => _courseService ?? (_courseService = new StudentService());
 
         public List<Course> GetObjectByFilter(FilterDefinition<Course> filter)
         {
-            var objects = _repoCourse.GetFilteredCollection(filter).ToList();
-            return objects.Count == 0 ? throw new Exception($"Brak Kursu o danych zmiennych: {filter.ToJson()}") : objects; 
+            var objects = CourseRepository.GetFilteredCollection(filter).ToList();
+            return objects;
         }
 
         public Course GetCourseByName(string name)
         {
-            var objects = _repoCourse.GetObject(name);
-            return objects ?? throw new Exception($"Brak kursu o nazwie: {name}");
+            var objects = CourseRepository.GetObject(name);
+            return objects;
         }
 
         public List<Student> GetAllStudentsForCourse(string id)
         {
             List<Student> allStudentsForCourse = new List<Student>();
             var course = GetCourseByName(id);
-            var students = _studentService.GetAllObjects();
-            bool exist;
+            var students = StudentService.GetAllObjects();
+            
             foreach (var student in students)
             {
                 var exists = student.Courses.Find(x => x.Id == course.Id);
@@ -46,25 +49,35 @@ namespace StudentWebService.Services
                  .Set(x => x.LeadTeacher, course.LeadTeacher)
                  .Set(x => x.Points, course.Points);
 
-            var result = _repoCourse.Update(course.Id, updateDefinition);
+            var result = CourseRepository.Update(course.Id, updateDefinition);
             return result.IsAcknowledged;
         }
 
         public List<Course> GetAllObjects()
         {
-            var collection = _repoCourse.GetCollection().AsQueryable().ToList();
+            var collection = CourseRepository.GetCollection().AsQueryable().ToList();
             return collection;
         }
 
         public bool DeleteCourse(string name)
         {
-            var result = _repoCourse.Delete(name);
+            var result = CourseRepository.Delete(name);
             return result.DeletedCount != 0;
         }
 
         public void AddCourse(Course value)
         {
-            _repoCourse.AddObject(value);
+            CourseRepository.AddObject(value);
+        }
+
+        public CourseService()
+        {
+
+        }
+
+        public CourseService(StudentService studentService)
+        {
+            _courseService = studentService;
         }
     }
 }

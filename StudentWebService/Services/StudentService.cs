@@ -6,33 +6,50 @@ using StudentWebService.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 
 namespace StudentWebService.Services
 {
     public class StudentService : IObjectService
     {
-        private readonly BaseRepository<Student> _repoStudent = new StudentRepository();
-        private readonly CourseService _courseService = new CourseService();
+        private BaseRepository<Student> _repoStudent ;
+        public BaseRepository<Student> StudentRepository => _repoStudent ?? (_repoStudent = new StudentRepository());
+
+        private CourseService _courseService;
+        public CourseService CourseService => _courseService ?? (_courseService = new CourseService(this));
 
         public void AddCourseToStudentByName(string studentIndex, string courseName)
         {
             var student = GetStudentByIndex(studentIndex);
             var course = _courseService.GetCourseByName(courseName);
 
-            student.Courses.Add(course);
+            student.Courses.Add(new MongoDBRef("Courses",course.Id));
             UpdateStudent(student);
+        }
+
+        public List<Course> GetStudentCourses(string id)
+        {
+            List<Course> studentCourses = new List<Course>();
+            var courses = _courseService.GetAllObjects();
+            var student = GetStudentByIndex(id);
+            foreach (var course in student.Courses)
+            {
+                var courseFound = courses.Find(x => x.ObjectId == course.Id);
+                studentCourses.Add(courseFound);
+            }
+            return studentCourses;
         }
 
         public List<Student> GetObjectByFilter(FilterDefinition<Student> filter)
         {
-            var objects = _repoStudent.GetFilteredCollection(filter).ToList();
-            return objects.Count == 0 ?throw new Exception($"Brak Studenta o danych zmiennych: {filter.ToJson()}") : objects;
+            var objects = StudentRepository.GetFilteredCollection(filter).ToList();
+            return objects;
         }
 
         public Student GetStudentByIndex(string index)
         {
-            var objects = _repoStudent.GetObject(index);
-            return objects ?? throw new Exception($"Brak Studenta o indexie: {index}");
+            var objects = StudentRepository.GetObject(index);
+            return objects;
         }
 
         public bool UpdateStudent(Student student)
@@ -43,25 +60,25 @@ namespace StudentWebService.Services
                  .Set(x => x.BirthDate, student.BirthDate)
                  .Set(x => x.Courses, student.Courses);
 
-            var result = _repoStudent.Update(student.Id, updateDefinition);
+            var result = StudentRepository.Update(student.Id, updateDefinition);
             return result.IsAcknowledged;
         }
 
         public List<Student> GetAllObjects()
         {
-            var collection = _repoStudent.GetCollection().AsQueryable().ToList();
+            var collection = StudentRepository.GetCollection().AsQueryable().ToList();
             return collection;
         }
 
         public bool DeleteStudent(string index)
         {
-            var result = _repoStudent.Delete(index);
+            var result = StudentRepository.Delete(index);
             return result.DeletedCount != 0;
         }
 
         public void AddObject(Student value)
         {
-            _repoStudent.AddObject(value);
+            StudentRepository.AddObject(value);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace StudentWebService.Models
         [BsonDateTimeOptions]
         public DateTime AddedDate { get; set; }
 
-        public decimal Evaliation
+        public decimal Evaluation
         {
             get;
             set;
@@ -38,8 +38,8 @@ namespace StudentWebService.Models
         [BsonIgnore]
         public MarkValuesEnum EvaluationType
         {
-            get => MarkValue.GetValue(Evaliation);
-            set => Evaliation = MarkValue.GetValue(value);
+            get => MarkValue.GetValue(Evaluation);
+            set => Evaluation = MarkValue.GetValue(value);
         }
     }
 }
